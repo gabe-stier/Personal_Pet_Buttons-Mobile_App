@@ -1,0 +1,7 @@
+{
+  "name": "dog-buttons",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
