@@ -30,7 +30,7 @@
               </ion-item>
             </ion-menu-toggle>
             <ion-item
-              @click="logoutUser()"
+              @click="logout()"
               lines="none"
               detail="false"
               class="hydrated"
@@ -99,6 +99,7 @@ export default defineComponent({
   computed: {
     ...mapGetters("auth", {
       authData: "getAuthData",
+      loginStatus: "getLoginStatus",
     }),
   },
   setup() {
@@ -119,6 +120,7 @@ export default defineComponent({
     ];
 
     const route = useRoute();
+    const router = useRouter();
 
     return {
       selectedIndex,
@@ -132,6 +134,7 @@ export default defineComponent({
       logOutOutline,
       logOutSharp,
       isSelected: (url: string) => (url === route.path ? "selected" : ""),
+      router,
     };
   },
   methods: {
@@ -142,9 +145,9 @@ export default defineComponent({
     ...mapActions("auth", {
       logoutUser: "logoutUser",
     }),
-    async logoutUser() {
+    async logout() {
       await this.logoutUser();
-      this.$router.push("/login");
+      this.router.push("/login");
     },
   },
 });

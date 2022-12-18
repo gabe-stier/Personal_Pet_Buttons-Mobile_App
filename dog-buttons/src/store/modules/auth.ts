@@ -26,10 +26,6 @@ const actions = {
   async loginUser({ commit }: any, payload: any) {
     console.log(payload);
     const response = await axios.post("http://192.168.1.32:3000/auth/login", payload)
-    // const response = {
-    //   access_token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJzdWIiOjEsImlhdCI6MTYwODIwNjE3OSwiZXhwIjozNjAxNjA4MjA2MTc5fQ.BcHKT6ffgvkt0EztkJT35a0Yc7iWF9wkeNxKB4wSJEQ",
-    //   refresh_token: "fake_refresh_token"
-    // };
     if (response.status == 200 || response.status == 201) {
 
       await Preferences.set({
@@ -69,7 +65,10 @@ const actions = {
         userName: "",
       },
     }
+    await Preferences.remove({ key: "access_token" });
+    await Preferences.remove({ key: "refresh_token" });
     commit("setAuthToken", raw_data)
+    commit("saveLoginStatus", "loggedout")
   }
 };
 
