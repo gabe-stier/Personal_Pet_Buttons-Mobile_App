@@ -11,8 +11,16 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../views/FolderPage.vue")
   },
   {
+    path: "/settings",
+    component: () => import("../views/SettingsPage.vue")
+  },
+  {
     path: "/login",
     component: () => import("../views/LoginPage.vue")
+  },
+  {
+    path: "/logout",
+    component: () => import("../views/LogoutComponent.vue")
   }
 ]
 

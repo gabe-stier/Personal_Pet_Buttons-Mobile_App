@@ -9,23 +9,25 @@
       </ion-toolbar>
     </ion-header>
     <ion-content>
-      <form id="login-page">
-        <ion-item lines="full">
-          <ion-label position="floating">Email</ion-label>
-          <ion-input type="text" required></ion-input>
-        </ion-item>
-        <ion-item lines="full">
-          <ion-label position="floating">Password</ion-label>
-          <ion-input type="password" required></ion-input>
-        </ion-item>
-        <ion-row>
-          <ion-col>
-            <ion-button type="submit" color="danger" expand="block"
-              >Sign In</ion-button
-            >
-          </ion-col>
-        </ion-row>
-      </form>
+      <div id="page-content">
+        <form>
+          <ion-item lines="full">
+            <ion-label position="floating">Email</ion-label>
+            <ion-input type="text" required></ion-input>
+          </ion-item>
+          <ion-item lines="full">
+            <ion-label position="floating">Password</ion-label>
+            <ion-input type="password" required></ion-input>
+          </ion-item>
+          <ion-row>
+            <ion-col>
+              <ion-button type="submit" color="danger" expand="block"
+                >Sign In</ion-button
+              >
+            </ion-col>
+          </ion-row>
+        </form>
+      </div>
     </ion-content>
   </ion-page>
 </template>
@@ -33,6 +35,7 @@
 import { defineComponent } from "vue";
 
 import {
+  IonButtons,
   IonButton,
   IonContent,
   IonHeader,
@@ -43,9 +46,12 @@ import {
   IonRow,
   IonCol,
   IonLabel,
+  IonInput,
+  IonItem,
 } from "@ionic/vue";
 export default defineComponent({
   components: {
+    IonButtons,
     IonButton,
     IonContent,
     IonHeader,
@@ -56,14 +62,8 @@ export default defineComponent({
     IonRow,
     IonCol,
     IonLabel,
+    IonInput,
+    IonItem,
   },
 });
 </script>
-
-<style>
-#login-page {
-  width: 75%;
-  margin: auto;
-  margin-top: 50%;
-}
-</style>
