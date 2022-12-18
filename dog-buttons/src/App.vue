@@ -1,7 +1,11 @@
 <template>
   <ion-app>
     <ion-split-pane content-id="main-content">
-      <ion-menu content-id="main-content" type="overlay">
+      <ion-menu
+        content-id="main-content"
+        type="overlay"
+        v-bind:disabled="loginStatus == 'success' ? false : true"
+      >
         <ion-content>
           <ion-list id="inbox-list">
             <ion-list-header>Dog Buttons Application</ion-list-header>

@@ -10,7 +10,7 @@ const state = () => ({
     userId: "",
     userName: "",
   },
-  loginStatus: "success"
+  loginStatus: "loggedout"
 });
 
 const getters = {
@@ -25,21 +25,27 @@ const getters = {
 const actions = {
   async loginUser({ commit }: any, payload: any) {
     console.log(payload);
-    const response = await axios.post("http://192.168.1.32:3000/auth/login", payload)
-    if (response.status == 200 || response.status == 201) {
+    try {
 
-      await Preferences.set({
-        key: "access_token",
-        value: response.data.access_token
-      });
-      await Preferences.set({
-        key: "refresh_token",
-        value: response.data.refresh_token
-      });
+      const response = await axios.post("http://192.168.1.32:3000/auth/login", payload)
+      console.log(response.status)
+      if (response.status == 200 || response.status == 201) {
 
-      commit('saveAuthToken', response.data);
-      commit('saveLoginStatus', 'success');
-    } else {
+        await Preferences.set({
+          key: "access_token",
+          value: response.data.access_token
+        });
+        await Preferences.set({
+          key: "refresh_token",
+          value: response.data.refresh_token
+        });
+
+        commit('saveAuthToken', response.data);
+        commit('saveLoginStatus', 'success');
+      } else {
+        commit('saveLoginStatus', 'failed');
+      }
+    } catch {
       commit('saveLoginStatus', 'failed');
     }
   },
@@ -52,6 +58,7 @@ const actions = {
         refresh_token: refresh_token.value
       };
       commit("saveAuthToken", tokenData);
+      commit('saveLoginStatus', 'success');
     }
   },
   async logoutUser({ commit }: any) {

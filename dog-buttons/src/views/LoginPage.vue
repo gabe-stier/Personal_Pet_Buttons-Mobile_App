@@ -12,11 +12,13 @@
       <div id="page-content">
         <form>
           <ion-item lines="full">
-            <ion-label position="floating">Email</ion-label>
+            <ion-label position="floating">Username</ion-label>
             <ion-input
               type="text"
               required
               v-model="userInfo.username"
+              @keyup.enter="login($event)"
+              v-on:keyup.enter="login($event)"
             ></ion-input>
           </ion-item>
           <ion-item lines="full">
@@ -25,17 +27,22 @@
               type="password"
               required
               v-model="userInfo.password"
-            ></ion-input>
+              @keyup.enter="login($event)"
+              v-on:keyup.enter="login($event)"
+            >
+            </ion-input>
           </ion-item>
           <ion-row>
             <ion-col>
               <ion-button
-                type="submit"
                 color="danger"
                 expand="block"
-                @click="login()"
-                >Sign In</ion-button
+                @click="login($event)"
+                @keyup.enter="login($event)"
+                v-on:keyup.enter="login($event)"
               >
+                Sign In
+              </ion-button>
             </ion-col>
           </ion-row>
         </form>
@@ -61,11 +68,9 @@ import {
   IonLabel,
   IonInput,
   IonItem,
-  IonToast,
   toastController,
 } from "@ionic/vue";
 
-import { useRouter } from "vue-router";
 export default defineComponent({
   components: {
     IonButtons,
@@ -99,9 +104,10 @@ export default defineComponent({
     ...mapActions("auth", {
       loginUser: "loginUser",
     }),
-    async login() {
+    async login(event: any) {
       if (this.userInfo.username && this.userInfo.password) {
         await this.loginUser(this.userInfo);
+        event.target.blur();
         console.log(this.loginStatus);
         if (this.loginStatus === "success") {
           const toast = await toastController.create({
@@ -109,12 +115,18 @@ export default defineComponent({
             duration: 1500,
             position: "bottom",
           });
+          await toast.present();
+          this.userInfo.password = "";
+          this.userInfo.username = "";
+          this.$router.push("/home");
         } else {
           const toast = await toastController.create({
             message: "Login Failed",
             duration: 1500,
             position: "bottom",
           });
+          this.userInfo.password = "";
+          await toast.present();
         }
       }
     },
