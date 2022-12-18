@@ -5,7 +5,7 @@
         <ion-content>
           <ion-list id="inbox-list">
             <ion-list-header>Dog Buttons Application</ion-list-header>
-            <ion-note>{{ user }}</ion-note>
+            <ion-note>Hello {{ getUsername() }}!</ion-note>
 
             <ion-menu-toggle
               auto-hide="false"
@@ -29,6 +29,16 @@
                 <ion-label>{{ p.title }}</ion-label>
               </ion-item>
             </ion-menu-toggle>
+            <ion-item
+              @click="logoutUser()"
+              lines="none"
+              detail="false"
+              class="hydrated"
+            >
+              <ion-icon slot="start" :ios="logOutOutline" :md="logOutSharp">
+              </ion-icon>
+              <ion-label>Logout</ion-label></ion-item
+            >
           </ion-list>
         </ion-content>
       </ion-menu>
@@ -52,8 +62,9 @@ import {
   IonRouterOutlet,
   IonSplitPane,
 } from "@ionic/vue";
+import { mapGetters, mapActions } from "vuex";
 import { defineComponent, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import {
   homeOutline,
   homeSharp,
@@ -82,8 +93,13 @@ export default defineComponent({
     IonSplitPane,
   },
   data() {
-    const user = "No User";
+    const user = "null";
     return { user };
+  },
+  computed: {
+    ...mapGetters("auth", {
+      authData: "getAuthData",
+    }),
   },
   setup() {
     const selectedIndex = ref(0);
@@ -100,26 +116,7 @@ export default defineComponent({
         iosIcon: settingsOutline,
         mdIcon: settingsSharp,
       },
-      {
-        title: "Login",
-        url: "/login",
-        iosIcon: logInOutline,
-        mdIcon: logInSharp,
-      },
-      {
-        title: "Logout",
-        url: "/logout",
-        iosIcon: logOutOutline,
-        mdIcon: logOutSharp,
-      },
     ];
-
-    const path = window.location.pathname.split("folder/")[1];
-    if (path !== undefined) {
-      selectedIndex.value = appPages.findIndex(
-        (page) => page.title.toLowerCase() === path.toLowerCase()
-      );
-    }
 
     const route = useRoute();
 
@@ -136,6 +133,19 @@ export default defineComponent({
       logOutSharp,
       isSelected: (url: string) => (url === route.path ? "selected" : ""),
     };
+  },
+  methods: {
+    getUsername() {
+      const user = this.authData.userName;
+      return user;
+    },
+    ...mapActions("auth", {
+      logoutUser: "logoutUser",
+    }),
+    async logoutUser() {
+      await this.logoutUser();
+      this.$router.push("/login");
+    },
   },
 });
 </script>

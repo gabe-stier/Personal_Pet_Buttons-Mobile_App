@@ -44,6 +44,7 @@ import {
 } from "@ionic/vue";
 import { useRouter } from "vue-router";
 
+import { mapGetters } from "vuex";
 export default defineComponent({
   name: "FolderPage",
   components: {
@@ -54,6 +55,11 @@ export default defineComponent({
     IonPage,
     IonTitle,
     IonToolbar,
+  },
+  computed: {
+    ...mapGetters("auth", {
+      authData: "getAuthData",
+    }),
   },
   data() {
     const loggedIn = true;
